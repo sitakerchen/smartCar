@@ -1,0 +1,11 @@
+"STARTUP.obj",
+"main.obj",
+"delay.obj",
+"motor.obj",
+"led.obj",
+"track.obj",
+"PWM.obj",
+"bt.obj",
+"Serial.obj" 
+TO "keil_project" 
+RAMSIZE(256) 

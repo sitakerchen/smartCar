@@ -1,0 +1,71 @@
+C51 COMPILER V9.52.0.0   SERIAL                                                            06/03/2021 22:01:21 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE SERIAL
+OBJECT MODULE PLACED IN Serial.obj
+COMPILER INVOKED BY: C:\Users\starkchen\Keil4\C51\BIN\C51.EXE src\Serial.c BROWSE DEBUG OBJECTEXTEND PRINT(.\Serial.lst)
+                    - TABS(2) OBJECT(Serial.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include "Serial.h"
+   3          
+   4          uchar Serial_Data; 
+   5          
+   6          void Serial_Init()
+   7          {
+   8   1        //定时器设置        提供波特率
+   9   1        TMOD &= 0x0F;
+  10   1        TMOD |= 0x20;
+  11   1        TH1 = 0xfd;   //初值计算 9600 = (2的SMOD次方/32)*(T1溢出率) = (1/32)*(11059200/(256-X)*12)
+  12   1        TL1 = 0xfd;
+  13   1        TR1 = 1;
+  14   1        //Serial 设置
+  15   1        SCON = 0x50;    //工作方式1，波特率9600bps，允许接收
+  16   1        PCON &= ~0x80;    //波特率不加倍
+  17   1        EA = 1;//总中断
+  18   1        ES = 1;//串口中断
+  19   1      }
+  20          void Serial_SendMsg(unsigned char Msg)
+  21          {
+  22   1        ES = 0;//关闭串口中断 
+  23   1        SBUF = Msg;
+  24   1        while(0 == TI);//等待数据传输完成
+  25   1        //恢复中断
+  26   1        TI = 0;
+  27   1        ES = 1;
+  28   1        
+  29   1      }
+  30          
+  31          void Serial_GetMsg() interrupt 4
+  32          {
+  33   1        RI = 0;
+  34   1        Serial_Data = SBUF;
+  35   1      }
+  36          
+  37          
+  38          
+  39          
+  40          
+  41          
+  42          
+  43          
+  44          
+  45          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     43    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.52.0.0   SERIAL                                                            06/03/2021 22:01:21 PAGE 2   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

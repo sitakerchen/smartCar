@@ -1,0 +1,85 @@
+C51 COMPILER V9.52.0.0   MOTOR                                                             06/03/2021 22:01:20 PAGE 1   
+
+
+C51 COMPILER V9.52.0.0, COMPILATION OF MODULE MOTOR
+OBJECT MODULE PLACED IN motor.obj
+COMPILER INVOKED BY: C:\Users\starkchen\Keil4\C51\BIN\C51.EXE src\motor.c BROWSE DEBUG OBJECTEXTEND PRINT(.\motor.lst) T
+                    -ABS(2) OBJECT(motor.obj)
+
+line level    source
+
+   1          #include <reg52.h>
+   2          #include "motor.h"
+   3          #include "delay.h"
+   4          
+   5          sbit B2A = P0 ^ 0; // B wheel 2A port
+   6          sbit B1A = P0 ^ 1; // B wheel 1A port
+   7          sbit A1A = P0 ^ 2; // A wheel 1A port
+   8          sbit A1B = P0 ^ 3; // A wheel 1B port
+   9          
+  10          void motor_reset()
+  11          {
+  12   1        A1A = A1B = B1A = B2A = 1;
+  13   1      }
+  14          
+  15          void motor_forword()
+  16          {
+  17   1        A1A = 1;
+  18   1        A1B = 0;
+  19   1        B1A = 1;
+  20   1        B2A = 0;
+  21   1      }
+  22          
+  23          void motor_backword()
+  24          {
+  25   1        A1A = 0;
+  26   1        A1B = 1;
+  27   1        B1A = 0;
+  28   1        B2A = 1;
+  29   1      }
+  30          
+  31          
+  32          void motor_turn(uint x)
+  33          {
+  34   1        switch (x)
+  35   1        {
+  36   2        case 0: // clockwise spin
+  37   2          A1A = B2A = 0;
+  38   2          A1B = B1A = 1;
+  39   2          break;
+  40   2        case 1: // left
+  41   2          A1A = 1;
+  42   2          B2A = 1;
+  43   2          B1A = 1;
+  44   2          A1B = 0;
+  45   2          break;
+  46   2        case 2: // right
+  47   2          B1A = 1;
+  48   2          A1B = 1;
+  49   2          A1A = 1;
+  50   2          B2A = 0;
+  51   2          break;
+  52   2        case 3: // counter clockwise spin
+  53   2          A1A = B2A = 1;
+  54   2          A1B = B1A = 0;
+C51 COMPILER V9.52.0.0   MOTOR                                                             06/03/2021 22:01:20 PAGE 2   
+
+  55   2          break;
+  56   2        default:
+  57   2          break;
+  58   2        }
+  59   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     80    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
